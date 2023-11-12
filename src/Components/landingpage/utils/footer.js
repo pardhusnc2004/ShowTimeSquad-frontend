@@ -3,42 +3,54 @@ import './style.css';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
+  const getbg=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "bg-dark"
+    }
+    return "bg-light"
+  }
   return (
-    <footer className="bg-dark text-white mt-5 py-2">
+    <footer className= {`${getbg()} text-white mt-5 py-2`}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12">
             <div className="app-info">
-              <h1 className="app-name text-center styled">
+              <h1 className={`${getcolor()} text-center app-name styled`}>
                 <span className="app-initial text-danger">SHOWTIME</span>SQUAD
               </h1>
             </div>
           </div>
           <div className="col-md-4  ">
             <div className="footer-title mb-4">
-              <b>Useful Links </b>
+              <b className={`${getcolor()}`}>Useful Links </b>
             </div>
             <ul className="list-unstyled">
-              <li><Link className='text-decoration-none text-light' to="/FAQ">FAQ</Link></li>
-              <li><Link className='text-decoration-none text-light' to="/auth">Sign In</Link></li>
-              <li>About Us</li>
-              <li>Advertise with Us</li>
-              <li>Terms and Conditions</li>
+              <li><Link to="/FAQ" className={`${getcolor()} text-decoration-none`}>FAQ</Link></li>
+              <li><Link to="/auth" className={`${getcolor()} text-decoration-none`}>Sign In</Link></li>
+              <li className={`${getcolor()}`}>About Us</li>
+              <li className={`${getcolor()}`}>Advertise with Us</li>
+              <li className={`${getcolor()}`}>Terms and Conditions</li>
             </ul>
           </div>
           <div className="col-md-4 ">
             <div className="footer-title mb-4">
-              <b>Help</b>
+              <b className={`${getcolor()}`}>Help</b>
             </div>
             <ul className="list-unstyled">
-              <li>Help Me</li>
-              <li>Feedback</li>
-              <li>Report a Issue / Bug</li>
+              <li className={`${getcolor()}`}>Help Me</li>
+              <li className={`${getcolor()}`}>Feedback</li>
+              <li className={`${getcolor()}`}>Report a Issue / Bug</li>
             </ul>
           </div>
           <div className="col-md-4 ">
             <div className="footer-title mb-4">
-              <b>Contact Us</b>
+              <b className={`${getcolor()}`}>Contact Us</b>
             </div>
             <form>
               <div className="mb-3">
@@ -57,7 +69,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className='bg-dark text-white text-center py-3'>
+      <div className={`${getcolor()} ${getbg()} text-center py-3`}>
         Copyright &copy; 2023 | SHOWTIMESQUAD
       </div>
     </footer>

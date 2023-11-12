@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import {
   faImdb
 } from '@fortawesome/free-brands-svg-icons';
+import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios'
 const MovieDetails = () => {
   const [textColor, setTextColor] = useState('text-light'); 

@@ -21,7 +21,7 @@ const Carousell = () => {
   }
   return (
     <Carousel>
-      {arr.map((movie) => (
+      {arr.slice(0,6).map((movie) => (
         <Carousel.Item key={movie.name} interval={2000}>
           <img
             src={movie.banner}

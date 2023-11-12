@@ -59,6 +59,7 @@ function BookTickets() {
 
   const handleCitySelect = (selectedCity) => {
     setCity(selectedCity);
+    
     getTheatres(selectedCity);
   };
 

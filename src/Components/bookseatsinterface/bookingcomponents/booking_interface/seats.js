@@ -5,7 +5,7 @@ const SeatsCheck = (props) => {
   const seatsarr = props.obj.seats;
   const [amount, setAmount] = useState(0)
   const [selectedSeats, setSelectedSeats] = useState(new Set());
-
+  
   const handleSeatClick = (seatId, isOccupied) => {
     if (!isOccupied) {
       const updatedSelectedSeats = new Set(selectedSeats);
