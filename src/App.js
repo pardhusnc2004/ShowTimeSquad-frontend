@@ -12,7 +12,7 @@ import UserProfilePage from './Components/landingpage/utils/profile';
 function App() {
   return (
     <HashRouter>
-      <div className={`container-fluid p-0 ${(localStorage.getItem('darkmode')==="yes") ? 'bg-dark' : 'bg-light'}`}>
+      <div className={`container-fluid p-0 min-vh-100 ${(localStorage.getItem('darkmode')==="yes") ? 'bg-dark' : 'bg-light'}`}>
         <Navbar />
         <Routes>
           <Route path='/' element={<LandingPage/>}/>

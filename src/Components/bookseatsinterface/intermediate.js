@@ -7,6 +7,7 @@ import {
   faImdb
 } from '@fortawesome/free-brands-svg-icons';
 import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons';
+import Badge from 'react-bootstrap/Badge';
 import Axios from 'axios'
 const MovieDetails = () => {
   const [textColor, setTextColor] = useState('text-light'); 
@@ -37,6 +38,7 @@ const MovieDetails = () => {
       }
     })
     .catch((err) => alert(err))
+
   }, [id]);
 
   const trailerVideoLink = data.trailer // Replace this with your actual trailer link
@@ -44,6 +46,20 @@ const MovieDetails = () => {
   const booktickets=()=>{
     window.location.href="/#/booktickets/"+id;
   }
+  const genrearray=(genre)=>{
+    return genre.split(/\s+/);
+  }
+  const GenrePills = (genres) => {
+    return (
+      <div>
+        {genres.map((genre, index) => (
+          <Badge key={index} pill variant="primary" className="m-1">
+            {genre}
+          </Badge>
+        ))}
+      </div>
+    );
+  };
   return (
     <div
       className={`movie-details-page ${textColor}`}
@@ -103,6 +119,13 @@ const MovieDetails = () => {
                 <Card.Text className={`text-white`}>
                   {data.summary}
                 </Card.Text>
+                <div>
+                {data.genre && (genrearray(data.genre)?.map((genre, index) => (
+        <Badge key={index} pill variant="warnin" className="m-1">
+          {genre}
+        </Badge>
+      )))}
+                </div>
               </Card.Body>
             </Card>
 

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import '../utils/styles.css'
 
-const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed }) => {
+const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, moviename="" }) => {
+  
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedTheater, setSelectedTheater] = useState("");
   const [selectedDates, setSelectedDates] = useState([]);
@@ -27,9 +28,7 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed }) => {
       options.push({ date, formattedDate });
     }
     setDates(options);
-    
-
-    Axios.get("https://showtimesquad-backend.onrender.com/theatres/get-cities")
+    Axios.post("https://showtimesquad-backend.onrender.com/theatres/get-cities/",{movie:moviename})
       .then((res) => {
         if (res.status === 200) {
           setLocations(res.data);
@@ -44,8 +43,8 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed }) => {
   }, []);
 
   const getTheatres = (selectedCity) => {
-    Axios.get(
-      `https://showtimesquad-backend.onrender.com/theatres/get-theaters/${selectedCity}`
+    Axios.post(
+      `https://showtimesquad-backend.onrender.com/theatres/get-theaters/`,{city:selectedCity,movie:moviename}
     )
       .then((res) => {
         if (res.status === 200) {
@@ -87,6 +86,7 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed }) => {
 
   return (
     <div>
+      {console.log("moviename",moviename)}
       <div className="card-container d-flex">
         <p className="d-flex align-items-center mb-0 fs-4">Location </p>
         {locations.map((location, index) => (

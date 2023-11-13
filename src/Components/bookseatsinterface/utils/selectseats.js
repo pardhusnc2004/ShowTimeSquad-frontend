@@ -1,6 +1,6 @@
-// SelectSeats.jsx
 import React, { useState } from 'react';
 import Axios from 'axios';
+import './styles.css'
 
 const SeatsCheck = (props) => {
   const seatsarr = props.obj?.seats || [];
@@ -68,6 +68,7 @@ const SeatsCheck = (props) => {
       }
       seatRows.push(
         <div key={i} className="row">
+          <div className='col-2'></div>
           {seatRow}
         </div>
       );
@@ -77,8 +78,11 @@ const SeatsCheck = (props) => {
 
   return (
     <center>
-      <div className="container">
-        {showseats && renderSeats()}
+      <div className="container justify-content-center">
+        <div className='col-md-8'>
+          {showseats && renderSeats()}
+        </div>
+        {localStorage.setItem('selectedseatsnow', Array.from(selectedSeats).join(", "))}
         <p className='mt-2'>Selected Seats: {Array.from(selectedSeats).join(", ")}</p>
         <p>Total Amount: {amount}</p>
         {showseats && <div className='btn btn-success' onClick={handleClick}>Confirm Tickets</div>}

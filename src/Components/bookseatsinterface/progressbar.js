@@ -14,6 +14,7 @@ const ProgressBarComponent = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState("");
   const [step, setStep] = useState(1);
+  const [seatitems, setSeatitems] = useState([])
   const [progressData, setProgressData] = useState({
     city: "",
     theaterName: "",
@@ -45,8 +46,8 @@ const ProgressBarComponent = () => {
     }));
   };
 
-  const getSelectedSeatChildData = (data, selectedSeats) => {
-    setSelectedSeats(new Set(selectedSeats));
+  const getSelectedSeatChildData = (maindata) => {
+    setSeatitems(maindata)
   };
 
   const getfinaldata = (data) => {
@@ -54,10 +55,12 @@ const ProgressBarComponent = () => {
   }
 
   useEffect(() => {
+    
     Axios.get(`https://showtimesquad-backend.onrender.com/movies/get-details/${id}`)
       .then((res) => {
         if (res.status === 200) {
           setMovie(res.data.name);
+          localStorage.setItem('movie', res.data.name)
         } else {
           Promise.reject();
         }
@@ -82,6 +85,9 @@ const ProgressBarComponent = () => {
 
   const handleSubmit2 = () => {
     console.log("selectedSeats", selectedSeats);
+    console.log("seatitem",seatitems)
+    
+    console.log("inprogressbar happydata",seatitems)
   };
 
   const handleNext = () => {
@@ -94,8 +100,7 @@ const ProgressBarComponent = () => {
         }
         setStep((prevStep) => prevStep + 1);
       } else {
-        alert('Finish action! You completed all steps.');
-        setStep(1);
+        window.location.href = "/"
       }
     }
     else{
@@ -122,10 +127,10 @@ const ProgressBarComponent = () => {
         ))}
       </div>
       <ProgressBar now={calculateProgress()} className="my-3" />
-      {step === 1 && <DateCityTheaterTime onSelectionChange={handleSelectionChange} proceed={proceed} dontproceed={dontproceed}/>}
+      {step === 1 && movie && <DateCityTheaterTime onSelectionChange={handleSelectionChange} proceed={proceed} dontproceed={dontproceed} moviename={movie}/>}
       {step === 2 && <SeatBooking obj={showDetails} getfinaldata = {getfinaldata} getSelectedSeatChildData={getSelectedSeatChildData} proceed={proceed} dontproceed={dontproceed}/>}
       {step === 3 && <Payment finaldata={finaldata} />}
-      {step === 4 && <Ticket  finaldata={finaldata} />}
+      {step === 4 && <Ticket  finaldata={finaldata} items = {seatitems} />}
       <div className="text-center mt-3">
         <Button variant="secondary" onClick={handleBack} disabled={step === 1 || step === 4}>
           {(step === 3)?"cancel Payment": "Go Back"}

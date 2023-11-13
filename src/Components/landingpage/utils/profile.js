@@ -15,8 +15,14 @@ const UserProfile = () => {
   const [editMode, setEditMode] = useState(false);
   const [viewProfile, setViewProfile] = useState(true);
   const [viewBookedSeats, setViewBookedSeats] = useState(false);
-
+  const [bookedseats,setBookedSeats]=useState([]);
   useEffect(() => {
+    axios.get("https://showtimesquad-backend.onrender.com/shows/userBookedSeats/"+localStorage.getItem("id")).then((res)=>{
+      if(res.status===200){
+        setBookedSeats(res.data);
+      }
+      else Promise.reject();
+    }).catch((err)=>{console.log(err)});
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`https://showtimesquad-backend.onrender.com/users/profile/${id}`);
@@ -28,7 +34,16 @@ const UserProfile = () => {
 
     fetchUserData();
   }, [id]);
-
+  const printTicket = (showName, location, theater, date, time, seatIds) => {
+    const content = `Movie: ${showName}\nLocation: ${location}\nTheater: ${theater}\nDate: ${date}\nTime: ${time}\n\nSeats: ${seatIds.join(', ')}`;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'movie_ticket.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
   const handleInputChange = (e) => {
     setUserData({
       ...userData,
@@ -116,11 +131,39 @@ const UserProfile = () => {
               </div>
             )}
             {viewBookedSeats && (
-              <div>
-                {/* Add logic for viewing booked seats */}
-                <h2 className="text-center">Booked Seats</h2>
-                <p>Booked seats will be displayed here.</p>
+              <div className="container mt-5">
+              <h1 className="text-center mb-4">Movie Booking Details</h1>
+              <div className="row">
+                {bookedseats.map((booking, index) => (
+                  <div key={index} className="col-md-6">
+                    <div className="card mb-4 shadow">
+                      <div className="card-body">
+                        <h5 className="card-title">{booking.showName}</h5>
+                        <p className="card-text"><strong>Location:</strong> {booking.location}</p>
+                        <p className="card-text"><strong>Theater:</strong> {booking.theater}</p>
+                        <p className="card-text"><strong>Date:</strong> {booking.date}</p>
+                        <p className="card-text"><strong>Time:</strong> {booking.time}</p>
+                        <p className="card-text"><strong>Total Seats Booked:</strong> {booking.totalSeatsBooked}</p>
+                        <p className="card-text"><strong>Seats:</strong> {booking.seatIds.join(', ')}</p>
+                        <button
+                          className="btn btn-success"
+                          onClick={() => printTicket(
+                            booking.showName,
+                            booking.location,
+                            booking.theater,
+                            booking.date,
+                            booking.time,
+                            booking.seatIds
+                          )}
+                        >
+                          Print Ticket
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
+            </div>
             )}
             {editMode && (
               <div>

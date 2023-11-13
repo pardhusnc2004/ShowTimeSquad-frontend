@@ -17,7 +17,13 @@ const Carousell = () => {
       .catch((err)=> alert(err));
   },[]);
   const getMovieDetails=(event)=>{
-    window.location.href = '/#/moviedetails/'+event.target.id;
+    if(localStorage.getItem("islogged")=='true'){
+      window.location.href = '/#/moviedetails/'+event.target.id;
+    }
+    else{
+      window.location.href='/#/auth';
+    }
+    
   }
   return (
     <Carousel>
