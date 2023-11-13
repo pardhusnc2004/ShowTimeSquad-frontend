@@ -109,6 +109,7 @@ const ProgressBarComponent = () => {
   };
 
   const handleBack = () => {
+    if(step === 1) window.location.href = '/'
     if(step === 3) window.location.href = "/"
     else setStep((prevStep) => Math.max(prevStep - 1, 1));
   };
@@ -132,7 +133,7 @@ const ProgressBarComponent = () => {
       {step === 3 && <Payment finaldata={finaldata} />}
       {step === 4 && <Ticket  finaldata={finaldata} items = {seatitems} />}
       <div className="text-center mt-3">
-        <Button variant="secondary" onClick={handleBack} disabled={step === 1 || step === 4}>
+        <Button variant="secondary" onClick={handleBack} disabled={step === 4}>
           {(step === 3)?"cancel Payment": "Go Back"}
         </Button>{' '}
         <Button variant="primary" onClick={handleNext}>

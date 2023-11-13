@@ -1,7 +1,9 @@
 // userProfile.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
+import QRCode from 'qrcode';
+import jsPDF from 'jspdf';
 import './style.css';
 const UserProfile = () => {
   const { id } = useParams();
@@ -34,16 +36,54 @@ const UserProfile = () => {
 
     fetchUserData();
   }, [id]);
-  const printTicket = (showName, location, theater, date, time, seatIds) => {
-    const content = `Movie: ${showName}\nLocation: ${location}\nTheater: ${theater}\nDate: ${date}\nTime: ${time}\n\nSeats: ${seatIds.join(', ')}`;
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'movie_ticket.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+  
+  const printTicket = async (showName, location, theater, date, time, seatIds, noseats) => {
+    try {
+      const randomString = Math.random().toString(36).substring(7);
+      const qrCodeData = `Movie: ${showName}\nLocation: ${location}\nTheater: ${theater}\nDate: ${date}\nTime: ${time}\nSeats: ${seatIds.join(', ')}\nQR Code Identifier: ${randomString}`;
+      const qrCodeDataURL = await QRCode.toDataURL(qrCodeData);
+  
+      const doc = new jsPDF();
+  
+      doc.addImage(qrCodeDataURL, 'JPEG', 50, 10, 100, 100);
+      
+      doc.setFontSize(16);
+      doc.text(10, 120, `Booked By: ${localStorage.getItem('username')}`);
+      doc.text(10, 140, `Movie: ${showName}`);
+      doc.text(10, 150, `Location: ${location}`);
+      doc.text(10, 160, `Theater: ${theater}`);
+      doc.text(10, 170, `Date: ${date}`);
+      doc.text(10, 180, `Time: ${time}`);
+      doc.text(10, 190, `No. of Tickets: ${noseats}`);
+  
+      // Calculate the number of lines needed for seatIds
+      const seatsPerLine = 18;
+      const seatLines = Math.ceil(seatIds.length / seatsPerLine);
+  
+      // Create an array to store lines of seatIds
+      const seatLinesArray = [];
+      for (let i = 0; i < seatLines; i++) {
+        const start = i * seatsPerLine;
+        const end = Math.min(start + seatsPerLine, seatIds.length);
+        const seatsLine = seatIds.slice(start, end).join(', ');
+  
+        // Print "Seats" label only for the first line
+        if (i === 0) {
+          doc.text(10, 200, `Seats: ${seatsLine}`);
+        } else {
+          doc.text(10, 200 + i * 10, seatsLine);
+        }
+  
+        seatLinesArray.push(seatsLine);
+      }
+  
+      doc.save('ShowTimeSquad_ticket.pdf');
+    } catch (error) {
+      console.error("Error generating and downloading ticket:", error);
+    }
   };
+  
+  
   const handleInputChange = (e) => {
     setUserData({
       ...userData,
@@ -153,7 +193,8 @@ const UserProfile = () => {
                             booking.theater,
                             booking.date,
                             booking.time,
-                            booking.seatIds
+                            booking.seatIds,
+                            booking.totalSeatsBooked
                           )}
                         >
                           Print Ticket

@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,7 +55,7 @@ function OffcanvasExample() {
                         
                         aria-label="Search"
                     />
-                    <Button variant="outline-success text-danger">Search</Button>
+                    <Button className="">Search</Button>
                     </Form>
                   <Nav.Link onClick={()=>{if(localStorage.getItem("darkmode")==='yes') {localStorage.setItem("darkmode","no");window.location.reload()} else {localStorage.setItem("darkmode","yes");window.location.reload()}}}>
                       <FontAwesomeIcon icon={faCircleHalfStroke} className={`${geticon()}`} style={{height: "20px",borderRadius: "10px"}} />
