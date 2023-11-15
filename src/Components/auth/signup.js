@@ -20,7 +20,12 @@ const SignUp = () => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
   };
-
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
   const validateForm = () => {
     const newErrors = {};
 
@@ -91,7 +96,7 @@ const SignUp = () => {
 
   return (
     <div className='d-grid mx-auto'>
-      <h2 className='text-center mb-4'>Sign Up</h2>
+      <h2 className={`text-center mb-4 ${getcolor()}`}>Sign Up</h2>
       <center>
         <form onSubmit={handleSignUp}>
           <div className='mb-3 col-8'>

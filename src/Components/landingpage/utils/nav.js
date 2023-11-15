@@ -1,7 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import {Link} from 'react-router-dom';
@@ -9,6 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
+import axios from 'axios';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { DropdownMenu } from 'react-bootstrap';
 function OffcanvasExample() {
   const handlelogout = () => {
     localStorage.setItem('islogged', false);
@@ -20,43 +27,123 @@ function OffcanvasExample() {
     }
     return "text-dark"
   }
+  const getlogo=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "https://drive.google.com/uc?id=1CEtiDG_7ZDKf5xKM4W13Bzv2N4l7vfJE"
+    }
+    return "https://drive.google.com/uc?id=10R8RZNaAsCFG5f249WxbaJjdWeqd47Y2"
+  }
   const geticon=()=>{
     if(localStorage.getItem("darkmode")==="yes"){
       return "bg-light text-dark"
     }
     return "bg-dark text-light"
   }
+  const gettheme=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "light-icon"
+    }
+    return "dark-icon"
+  }
   const getprofile = () =>{
     window.location.href="/#/profile/"+localStorage.getItem("id");
+  }
+  const genres= [
+    "Action",
+    "Animation",
+    "Adventure",
+    "Family",
+    "Comedy",
+    "Drama",
+    "Romance",
+    "Crime",
+    "Thriller",
+    "Sci-Fi"
+  ]
+  const [word, setWord] = useState("");
+  const [data, setData] = useState([]);
+  const [genredata,setgenredata]=useState([]);
+  const getDetails = () => {
+    if(word.length!=0){
+      axios.get("https://showtimesquad-backend.onrender.com/movies/searchbyname/" + word).then((res) => {
+      if (res.status === 200) {
+        setData(res.data);
+      }
+    });
+    }
+    
+  }
+  const getDetailsbygenre = (event) => {
+    axios.get("https://showtimesquad-backend.onrender.com/movies/searchbygenre/" +event.target.id).then((res) => {
+      if (res.status === 200) {
+        setgenredata(res.data);
+      }
+    });
+  }
+  const getMovieDetails=(event)=>{
+      window.location.href = '/#/moviedetails/'+event.currentTarget.id;
   }
   return (
     <>
       {['sm'].map((expand) => (
         <Navbar key={expand} expand={expand} variant='tabs' className="">
           <Container fluid>
-            <Navbar.Brand href="#" className={`${getcolor()}`}>ShowTimeSquad</Navbar.Brand>
+            <Navbar.Brand href="#" className={`${getcolor()}`}><img height="36px" src={getlogo()}/></Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="start"
             >
-              <Offcanvas.Header closeButton>
-                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+              <Offcanvas.Header closeButton className={gettheme()}>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} style={{color:(localStorage.getItem('darkmode'))?"white":"black"}} className={gettheme()}>
                   ShowTimeSquad
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Form className="d-flex">
+                <Form className="d-flex mx-5">
                     <Form.Control
                         type="search"
                         placeholder="Search"
-                        
+                        onChange={(event)=>{setWord(event.target.value)}}
                         aria-label="Search"
                     />
-                    <Button className="">Search</Button>
-                    </Form>
+                </Form>
+                    <DropdownButton
+                      as={ButtonGroup}
+                      id={"search"}
+                      variant={"success"}
+                      title={"search"}
+                      onClick={getDetails}
+                      drop={"down-centered"}
+                    >
+                      {data.map((ele)=>{
+                       return(<><Dropdown.Item id={ele._id} onClick={getMovieDetails}>
+                                <span><img src={ele.image} style={{width:"40px",marginRight: "10px"}}/></span>{ele.name}
+                              </Dropdown.Item>
+                              <Dropdown.Divider />
+                              </>)
+                      })}
+                    </DropdownButton>
+                    <DropdownButton
+                        as={ButtonGroup}
+                        id={"search"}
+                        variant={"primary"}
+                        title={"Search by Genre"}
+                        drop={"down-centered"}
+                        className='mx-3'
+                      >
+                        {genres.map((ele) => (
+                          <NavDropdown title={ele} id={ele} drop='start' onClick={getDetailsbygenre}>{genredata.map((record)=>{
+                            return(<><Dropdown.Item id={record._id} onClick={getMovieDetails}>
+                              <span><img src={record.image} style={{width:"40px",marginRight: "10px"}}/></span>{record.name}
+                            </Dropdown.Item>
+                            <Dropdown.Divider />
+                            </>)
+                          })}</NavDropdown>
+                        ))}
+                      </DropdownButton>
                   <Nav.Link onClick={()=>{if(localStorage.getItem("darkmode")==='yes') {localStorage.setItem("darkmode","no");window.location.reload()} else {localStorage.setItem("darkmode","yes");window.location.reload()}}}>
                       <FontAwesomeIcon icon={faCircleHalfStroke} className={`${geticon()}`} style={{height: "20px",borderRadius: "10px"}} />
                   </Nav.Link>

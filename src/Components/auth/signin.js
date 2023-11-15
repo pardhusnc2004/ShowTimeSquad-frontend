@@ -55,10 +55,15 @@ function SignIn() {
       window.location.href = '/';
     }, 1500);
   };
-
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
   return (
     <div className='d-grid mx-auto' style={{ maxWidth: '60%' }}>
-      <h2 className='text-center mb-4'>Sign In</h2>
+     <h2 className={`text-center mb-4 ${getcolor()}`}>Sign In</h2>
       <p className="text-danger text-center">{message}</p>
       <center className='row'>
         <form onSubmit={handleSubmit}>
