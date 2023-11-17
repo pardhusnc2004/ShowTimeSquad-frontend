@@ -12,7 +12,7 @@ const SignUp = () => {
     mobile: '',
     reEnterPassword: '',
   });
-
+  const [message,setmessage]=useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -20,12 +20,7 @@ const SignUp = () => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
   };
-  const getcolor=()=>{
-    if(localStorage.getItem("darkmode")==="yes"){
-      return "text-light"
-    }
-    return "text-dark"
-  }
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -53,6 +48,13 @@ const SignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
+
   const handleSignUp = (event) => {
     event.preventDefault();
     const isFormValid = validateForm();
@@ -61,7 +63,7 @@ const SignUp = () => {
       setLoading(true); // Set loading to true when starting the signup process
 
       Hasher(formData.password)
-        .then((hashedPassword) => {
+        .then( async (hashedPassword) => {
           console.log('Hashed Password:', hashedPassword);
           const data = {
             name: formData.username,
@@ -71,7 +73,13 @@ const SignUp = () => {
             dob: formData.dob,
           };
 
-          Axios.post('https://showtimesquad-backend.onrender.com/users/register/', data)
+          const res= await Axios.get('https://showtimesquad-backend.onrender.com/users/get-password/' + data.email);
+          if(res.data){
+            setmessage("Email already Registered");
+            setLoading(false);
+          }
+          else{
+            Axios.post('https://showtimesquad-backend.onrender.com/users/register/', data)
             .then((res) => {
               if (res.status === 200) {
                 window.location.href = '/';
@@ -84,6 +92,7 @@ const SignUp = () => {
               setLoading(false);
               event.target.reset();
             });
+          }
         })
         .catch((error) => {
           console.error('Error hashing password:', error);
@@ -97,6 +106,7 @@ const SignUp = () => {
   return (
     <div className='d-grid mx-auto'>
       <h2 className={`text-center mb-4 ${getcolor()}`}>Sign Up</h2>
+      <p className='text-center' style={{color : "red"}}>{message}</p>
       <center>
         <form onSubmit={handleSignUp}>
           <div className='mb-3 col-8'>
@@ -171,4 +181,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUp;

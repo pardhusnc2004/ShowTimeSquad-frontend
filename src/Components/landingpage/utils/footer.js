@@ -2,50 +2,56 @@ import React, { useState } from 'react';
 import './style.css';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import CustomAlert from '../../bookseatsinterface/utils/alert';
 
 const Footer = () => {
   const [feedback, setFeedback] = useState("");
   const username = localStorage.getItem('username');
-
+  const [showalert,setshowalert]=useState(false);
+  const unsetalert=()=>{
+    setshowalert(false);
+}
   const handleSubmit = async (event) => {
     if(localStorage.getItem('islogged') === 'false') window.location.href = '/#/auth'
-    event.preventDefault();
+    else {
+      event.preventDefault();
 
-    try {
-      const currentDate = new Date();
-      const options = { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric', 
-        hour: 'numeric', 
-        minute: 'numeric', 
-        second: 'numeric', 
-        hour12: true 
-      };
+      try {
+        const currentDate = new Date();
+        const options = { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: 'numeric', 
+          second: 'numeric', 
+          hour12: true 
+        };
 
-      const formattedDate = new Intl.DateTimeFormat('en-US', options).format(currentDate);
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(currentDate);
 
-      console.log(formattedDate);
+        console.log(formattedDate);
 
-      const feedbackData = {
-        username,
-        feedback,
-        time: formattedDate,
-      };
-      console.log(feedbackData)
-      // Use axios.post instead of axios.put for adding new feedback
-      await Axios.post("https://showtimesquad-backend.onrender.com/feedbacks/add-feedback", feedbackData)
-        .then((res) => {
-          if (res.status === 200) alert("Feedback posted");
-        })
-        .catch((err) => {
-          console.error("Error submitting feedback:", err);
-          alert("Error submitting feedback. Please try again.");
-        });
+        const feedbackData = {
+          username,
+          feedback,
+          time: formattedDate,
+        };
+        console.log(feedbackData)
+        // Use axios.post instead of axios.put for adding new feedback
+        await Axios.post("https://showtimesquad-backend.onrender.com/feedbacks/add-feedback", feedbackData)
+          .then((res) => {
+            if (res.status === 200) setshowalert(true);
+          })
+          .catch((err) => {
+            console.error("Error submitting feedback:", err);
+            alert("Error submitting feedback. Please try again.");
+          });
 
-      setFeedback("");
-    } catch (error) {
-      console.error("Error submitting feedback:", error);
+        setFeedback("");
+      } catch (error) {
+        console.error("Error submitting feedback:", error);
+      }
     }
   };
 
@@ -59,6 +65,7 @@ const Footer = () => {
 
   return (
     <footer className={`${getbg()} text-white mt-5 py-2`}>
+      {(showalert) &&  <CustomAlert type="success" message={"Thanks for the Feeback"} onClose={unsetalert}/>}
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12">

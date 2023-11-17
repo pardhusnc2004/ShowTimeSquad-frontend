@@ -44,7 +44,12 @@ const MovieDetails = () => {
   const trailerVideoLink = data.trailer // Replace this with your actual trailer link
   const imdbRating = data.rating; // Replace this with your actual IMDb rating
   const booktickets=()=>{
-    window.location.href="/#/booktickets/"+id;
+    if(localStorage.getItem("islogged")=='true'){
+      window.location.href="/#/booktickets/"+id;
+    }
+    else{
+      window.location.href='/#/auth';
+    }
   }
   const genrearray=(genre)=>{
     return genre.split(/\s+/);

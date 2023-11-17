@@ -20,12 +20,6 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
     today.setHours(6, 0, 0, 0);
 
     const options = [];
-    const getcolor=()=>{
-      if(localStorage.getItem("darkmode")==="yes"){
-        return "text-light"
-      }
-      return "text-dark"
-    }
     for (let i = 0; i < 4; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
@@ -64,7 +58,12 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
         alert(err);
       });
   };
-
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
   const handleCitySelect = (selectedCity) => {
     setSelectedCity(selectedCity);
     getTheatres(selectedCity);
@@ -93,7 +92,7 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
     <div>
       {console.log("moviename",moviename)}
       <div className="card-container d-flex">
-        <p className={`d-flex align-items-center mb-0 fs-4`}>Location </p>
+        <p className={`d-flex align-items-center mb-0 fs-4 mx-3 ${getcolor()}`}>LOCATION </p>
         {locations.map((location, index) => (
           <div
             key={index}
@@ -111,7 +110,7 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
         ))}
       </div>
       <div className="card-container d-flex">
-        <p className={`d-flex align-items-center mb-0 fs-4`}>Theater</p>
+        <p classs={``} className={`d-flex align-items-center mb-0 fs-4 mx-3 ${getcolor()}`}>THEATER</p>
         {theatres.map((theater, index) => (
           <div
             key={index}
@@ -129,7 +128,7 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
         ))}
       </div>
       <div className="card-container d-flex">
-        <p className={`d-flex align-items-center mb-0 fs-4`}>Date</p>
+        <p className={`d-flex align-items-center mb-0 fs-4 mx-3 ${getcolor()}`}>DATE</p>
         {dates.map((dateObj, index) => (
           <div
             key={index}
@@ -147,7 +146,7 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
         ))}
       </div>
       <div className="card-container d-flex">
-        <p className={`d-flex align-items-center mb-0 fs-4`}>Slot</p>
+        <p className={`d-flex align-items-center mb-0 fs-4 mx-3 ${getcolor()}`}>SLOT</p>
         {timeSlots.map((timeSlot, index) => (
           <div
             key={index}

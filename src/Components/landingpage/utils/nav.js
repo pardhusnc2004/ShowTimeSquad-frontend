@@ -96,8 +96,8 @@ function OffcanvasExample() {
               placement="start"
             >
               <Offcanvas.Header closeButton className={gettheme()}>
-                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} style={{color:(localStorage.getItem('darkmode'))?"white":"black"}} className={gettheme()}>
-                  ShowTimeSquad
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                <img height="36px" src="https://drive.google.com/uc?id=10R8RZNaAsCFG5f249WxbaJjdWeqd47Y2"/>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>

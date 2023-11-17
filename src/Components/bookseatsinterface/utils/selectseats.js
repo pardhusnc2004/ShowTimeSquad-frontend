@@ -21,7 +21,12 @@ const SeatsCheck = (props) => {
       setSelectedSeats(updatedSelectedSeats);
     }
   };
-
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
   const handleClick = () => {
     const updatedSeats = seatsarr.map((seatData) => {
       if (selectedSeats.has(seatData.seatId)) {
@@ -83,8 +88,8 @@ const SeatsCheck = (props) => {
           {showseats && renderSeats()}
         </div>
         {localStorage.setItem('selectedseatsnow', Array.from(selectedSeats).join(", "))}
-        <p className='mt-2'>Selected Seats: {Array.from(selectedSeats).join(", ")}</p>
-        <p>Total Amount: {amount}</p>
+        <p className={`mt-2 ${getcolor()}`}>Selected Seats: {Array.from(selectedSeats).join(", ")}</p>
+        <p className={`${getcolor()}`}>Total Amount: {amount}</p>
         {showseats && <div className='btn btn-success' onClick={handleClick}>Confirm Tickets</div>}
       </div>
     </center>

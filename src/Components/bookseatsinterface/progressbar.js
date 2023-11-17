@@ -9,12 +9,14 @@ import Ticket from './utils/eticket';
 import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './utils/styles.css'
+import CustomAlert from './utils/alert';
 
 const ProgressBarComponent = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState("");
   const [step, setStep] = useState(1);
   const [seatitems, setSeatitems] = useState([])
+  const [showalert,setshowalert]=useState(false);
   const [progressData, setProgressData] = useState({
     city: "",
     theaterName: "",
@@ -82,7 +84,9 @@ const ProgressBarComponent = () => {
       }
     });
   };
-
+  const unsetalert=()=>{
+    setshowalert(false);
+  }
   const handleSubmit2 = () => {
     console.log("selectedSeats", selectedSeats);
     console.log("seatitem",seatitems)
@@ -104,7 +108,7 @@ const ProgressBarComponent = () => {
       }
     }
     else{
-      alert("complete steps");
+      setshowalert(true);
     }
   };
 
@@ -120,6 +124,7 @@ const ProgressBarComponent = () => {
 
   return (
     <div className="container mt-5">
+      {(showalert) &&  <CustomAlert type="warning" message={"Complete the Steps"} onClose={unsetalert}/>}
       <div className="row justify-content-between align-items-center">
         {[1, 2, 3, 4].map((circle) => (
           <div key={circle} className={`col-auto circle ${circle === step ? 'active' : ''} ${circle < step ? 'completed' : ''}`}>
@@ -137,7 +142,7 @@ const ProgressBarComponent = () => {
           {(step === 3)?"cancel Payment": "Go Back"}
         </Button>{' '}
         <Button variant="primary" onClick={handleNext}>
-          {step === 4 ? 'Finish' : ''}{step===3 ? 'Confirm Payment':''}{step===2 ? 'Proceed to payment':''}{step===1 ?'Select Tickets':''}
+          {step === 4 ? 'Finish' : ''}{step===3 ? 'Confirm Payment':''}{step===2 ? 'Proceed to payment':''}{step===1 ?'Select Seats':''}
         </Button>
       </div>
     </div>

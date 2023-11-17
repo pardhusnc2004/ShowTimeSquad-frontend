@@ -14,7 +14,12 @@ const PaymentForm = ({ finaldata }) => {
     expYear: '',
     cvv: '',
   });
-  
+  const getcolor=()=>{
+    if(localStorage.getItem("darkmode")==="yes"){
+      return "text-light"
+    }
+    return "text-dark"
+  }
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
@@ -29,7 +34,7 @@ const PaymentForm = ({ finaldata }) => {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-12">
-        <h2 className="text-center mb-4">Payment Details</h2>
+        <h2 className={`text-center mb-4 ${getcolor()}`}>Payment Details</h2>
         <div className="card p-4">
             <div className="text-center mb-4">
               <div className="row">
