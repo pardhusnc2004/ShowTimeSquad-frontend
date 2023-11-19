@@ -75,7 +75,7 @@ const SignUp = () => {
 
           const res= await Axios.get('https://showtimesquad-backend.onrender.com/users/get-password/' + data.email);
           if(res.data){
-            setmessage("Email already Registered");
+            setmessage("Email is registered! Go to Sign In tab.");
             setLoading(false);
           }
           else{
@@ -159,7 +159,7 @@ const SignUp = () => {
           </div>
           <div className='mb-3 col-8'>
             <input
-              type='text'
+              type='number'
               id='mobile'
               className='form-control'
               placeholder='Enter your mobile number'

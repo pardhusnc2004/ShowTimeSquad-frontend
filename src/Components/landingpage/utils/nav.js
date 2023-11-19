@@ -19,7 +19,7 @@ import { DropdownMenu } from 'react-bootstrap';
 function OffcanvasExample() {
   const handlelogout = () => {
     localStorage.setItem('islogged', false);
-    window.location.reload()
+    window.location.href="/";
   }
   const getcolor=()=>{
     if(localStorage.getItem("darkmode")==="yes"){

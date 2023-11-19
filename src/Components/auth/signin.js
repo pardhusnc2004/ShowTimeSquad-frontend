@@ -7,6 +7,7 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [loading, setLoading] = useState(false);
+  // const [loadingadmin, setLoadingadmin] = useState(false);
   const [message,setmessage]=useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,9 +51,49 @@ function SignIn() {
       });
   };
 
+  // const handleAdminSubmit = (event) => {
+  //   event.preventDefault()
+  //   setLoadingadmin(true);
+  //   Axios.get('https://showtimesquad-backend.onrender.com/admins/get-password/' + email)
+  //     .then((res) => {
+  //       if (res.status === 200) {
+  //         const data = res.data;
+  //         if (!data) {
+  //           setmessage("Email is not registered");
+  //           setLoadingadmin(false);
+  //           return;
+  //         }
+  //         if (pass === data.password) {
+  //           localStorage.setItem('username', data.name);
+  //           localStorage.setItem('id', data._id);
+  //           localStorage.setItem('islogged',true);
+  //           localStorage.setItem('isAdmin', true)
+  //           redirectToAdminHome();
+  //         } else {
+  //           setmessage("Login Failed(incorrect password or email)");
+            
+  //           setLoadingadmin(false);
+  //         }
+
+  //       } else {
+          
+  //         setLoadingadmin(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       alert(err);
+  //       setLoadingadmin(false);
+  //     });
+  // }
+
   const redirectToHome = () => {
     setTimeout(() => {
       window.location.href = '/';
+    }, 1500);
+  };
+  const redirectToAdminHome = () => {
+    setTimeout(() => {
+      window.location.href = '/#/admin';
     }, 1500);
   };
   const getcolor=()=>{
@@ -81,9 +122,12 @@ function SignIn() {
             className='form-control mb-3 col-8'
             placeholder='Enter your password'
           />
-          <button type='submit' className='btn btn-success d-flex justify-content-center' style={{ margin: '0px auto' }}>
+          <button type='submit' className='btn btn-success mx-2' style={{ margin: '0px auto' }}>
             {loading ? <Loader /> : 'Login'}
           </button>
+          {/* <button onClick={handleAdminSubmit} className='btn btn-info mx-2' style={{ margin: '0px auto' }}>
+            {loadingadmin ? <Loader /> : 'Admin'}
+          </button> */}
         </form>
       </center>
     </div>

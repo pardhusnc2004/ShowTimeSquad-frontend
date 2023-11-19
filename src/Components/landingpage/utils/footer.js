@@ -10,7 +10,7 @@ const Footer = () => {
   const [showalert,setshowalert]=useState(false);
   const unsetalert=()=>{
     setshowalert(false);
-}
+  }
   const handleSubmit = async (event) => {
     if(localStorage.getItem('islogged') === 'false') window.location.href = '/#/auth'
     else {
@@ -81,8 +81,7 @@ const Footer = () => {
             </div>
             <ul className="list-unstyled">
               <li><Link to="/FAQ" className={`${getcolor()} text-decoration-none`}>FAQ</Link></li>
-              <li><Link to="/auth" className={`${getcolor()} text-decoration-none`}>Sign In</Link></li>
-              <li className={`${getcolor()}`}>About Us</li>
+              <li><Link to="/aboutus" className={`${getcolor()} text-decoration-none`}>About Us</Link></li>
               <li className={`${getcolor()}`}>Advertise with Us</li>
               <li className={`${getcolor()}`}>Terms and Conditions</li>
             </ul>

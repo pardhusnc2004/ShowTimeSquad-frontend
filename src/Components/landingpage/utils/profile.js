@@ -164,15 +164,15 @@ const UserProfile = () => {
             </div>
             {viewProfile && (
               <div>
-                <h2 className="text-center">{userData.name}'s Profile</h2>
+                <h2 className= " my-3 text-center">{userData.name}'s Profile</h2>
                 <p>Email: {userData.email}</p>
                 <p>Mobile: {userData.mobile}</p>
                 <p>Date of Birth: {userData.dob}</p>
               </div>
             )}
             {viewBookedSeats && (
-              <div className="container mt-5">
-              <h1 className="text-center mb-4">Movie Booking Details</h1>
+              <div className="container mt-3">
+              <h1 className="text-center mb-4">My Tickets</h1>
               <div className="row">
                 {bookedseats.map((booking, index) => (
                   <div key={index} className="col-md-6">
@@ -207,7 +207,7 @@ const UserProfile = () => {
             </div>
             )}
             {editMode && (
-              <div>
+              <div className='my-3'>
                 <h2 className="text-center">Edit Profile</h2>
                 <form>
                   <div className="mb-3">

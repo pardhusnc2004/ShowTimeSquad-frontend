@@ -9,6 +9,7 @@ import BookTickets from './Components/bookseatsinterface/bookingcomponents/bookt
 import FAQ from './Components/others/faq';
 import ProgressBarComponent from './Components/bookseatsinterface/progressbar';
 import UserProfilePage from './Components/landingpage/utils/profile';
+import AboutUs from './Components/others/aboutus';
 function App() {
   return (
     <HashRouter>
@@ -19,6 +20,7 @@ function App() {
           <Route path='/auth' element={<Auth />} />
           <Route path='/moviedetails/:id' element={<MovieDetails />} />
           <Route path='/FAQ' element={<FAQ/>}/>
+          <Route path='/aboutus' element={<AboutUs/>}/>
           <Route path='/booktickets/:id' element={<ProgressBarComponent/>}/>
           <Route path='/profile/:id' element={<UserProfilePage/>}/>
         </Routes>

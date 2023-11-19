@@ -41,6 +41,23 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
       });
   }, []);
 
+  const getindex=()=>{
+    var now=new Date();
+    console.log(now.getMinutes()<=15);
+    if(now.getHours()<=11 && (now.getHours()<11 || now.getMinutes()<=30)){
+      return 0;
+    }
+    else if(now.getHours()<=14 && (now.getHours()<14 || now.getMinutes()<=30)){
+      return 1;
+    }
+    else if(now.getHours()<=17 && (now.getHours()<17 || now.getMinutes()<=30)){
+      return 2;
+    }
+    else if(now.getHours()<=23 &&(now.getHours()<23 || now.getMinutes()<=30)){
+      return 3;
+    }
+  }
+
   const getTheatres = (selectedCity) => {
     Axios.post(
       `https://showtimesquad-backend.onrender.com/theatres/get-theaters/`,{city:selectedCity,movie:moviename}
@@ -147,7 +164,25 @@ const DateCityTheaterTime = ({ onSelectionChange, proceed, dontproceed, movienam
       </div>
       <div className="card-container d-flex">
         <p className={`d-flex align-items-center mb-0 fs-4 mx-3 ${getcolor()}`}>SLOT</p>
-        {timeSlots.map((timeSlot, index) => (
+        {((selectedDates[0]) && selectedDates[0].getDate()===dates[0].date.getDate()) ? 
+          
+          timeSlots.slice(getindex(),4).map((timeSlot, index) => (
+            <div
+              key={index}
+              style={{
+                display: currentStep >= 4 ? "block" : "none",
+                backgroundColor: selectedTime === timeSlot ? "#dc3545" : "#f8f9fa",
+                border: selectedTime === timeSlot ? "1px solid #dc3545" : "1px solid #dee2e6",
+                color: selectedTime === timeSlot ? "#ffffff" : "#495057",
+              }}
+              className={`btn cardsh ${(currentStep >= 4) ? "d-flex align-items-center justify-content-center" : ""}`}
+              onClick={() => handleTimeSelect(timeSlot)}
+            >
+              {timeSlot}
+            </div>
+          ))
+        :
+        timeSlots.map((timeSlot, index) => (
           <div
             key={index}
             style={{
