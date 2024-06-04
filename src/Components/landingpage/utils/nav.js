@@ -29,9 +29,9 @@ function OffcanvasExample() {
   }
   const getlogo=()=>{
     if(localStorage.getItem("darkmode")==="yes"){
-      return "https://drive.google.com/uc?id=1CEtiDG_7ZDKf5xKM4W13Bzv2N4l7vfJE"
+      return "https://drive.google.com/thumbnail?id=1CEtiDG_7ZDKf5xKM4W13Bzv2N4l7vfJE&sz=w1000"
     }
-    return "https://drive.google.com/uc?id=10R8RZNaAsCFG5f249WxbaJjdWeqd47Y2"
+    return "https://drive.google.com/thumbnail?id=10R8RZNaAsCFG5f249WxbaJjdWeqd47Y2&sz=w1000"
   }
   const geticon=()=>{
     if(localStorage.getItem("darkmode")==="yes"){
